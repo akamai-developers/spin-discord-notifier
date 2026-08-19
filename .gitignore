@@ -1,0 +1,6 @@
+target/
+dist/
+.spin/
+node_modules/
+.spin-aka/
+.DS_Store

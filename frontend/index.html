@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Notifier</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="h-full bg-slate-900 text-slate-100 flex items-center justify-center p-6">
+    <main class="flex flex-col items-center gap-8 max-w-md w-full text-center">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-16 h-16 rounded-2xl bg-teal-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-teal-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.175 13.175 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028Z"/>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-slate-100">Discord Notifier</h1>
+        <p class="text-slate-400 text-sm">Send a notification to your community instantly.</p>
+      </div>
+
+      <div id="action-area" class="w-full flex flex-col items-center gap-6">
+        <button
+          id="notify-btn"
+          class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-teal-500 hover:bg-teal-400 active:scale-95 text-slate-900 font-semibold text-lg shadow-lg shadow-teal-500/30 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+        >Notify The Community
+        </button>
+
+        <div id="success-msg" class="hidden flex-col items-center gap-4 p-6 rounded-2xl bg-slate-800 border border-teal-500/30 w-full">
+          <div class="flex items-center gap-2 text-teal-400">
+            <svg class="w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-semibold">Notification sent successfully!</span>
+          </div>
+          <p class="text-slate-400 text-sm">Your community has been notified. You're all set.</p>
+          <a
+            href="#"
+            onclick="window.close(); return false;"
+            class="text-teal-400 hover:text-teal-300 underline underline-offset-4 text-sm transition-colors duration-150"
+          >Close this tab</a>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/app.ts"></script>
+  </body>
+</html>
