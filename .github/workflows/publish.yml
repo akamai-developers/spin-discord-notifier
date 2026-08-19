@@ -1,0 +1,55 @@
+name: Publish Spin Artifact
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            RAW="${GITHUB_REF#refs/tags/}"
+            echo "value=${RAW#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install Rust with wasm32-wasip2 target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+
+      - name: Set up Node.js 26
+        uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+
+      - name: Install Spin CLI
+        uses: fermyon/actions/spin/setup@v1
+
+      - name: Build
+        run: spin build
+
+      - name: Log in to GHCR
+        run: |
+          spin registry login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Push artifact
+        run: |
+          spin registry push \
+            "ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.value }}"
