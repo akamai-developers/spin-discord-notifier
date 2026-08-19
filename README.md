@@ -19,7 +19,8 @@ This app is a lightweight Spin application that serves a small frontend and an A
 From the project root, start the app with Spin and pass the webhook URL as a variable:
 
 ```bash
-spin up --variable discord_webhook_url="https://discord.com/api/webhooks/your-webhook-id/your-token"
+spin up --build \
+  --variable discord_webhook_url="https://discord.com/api/webhooks/your-webhook-id/your-token"
 ```
 
-This will build the Rust component, serve the frontend, and start the API so it can send notifications to the configured Discord channel.
+This will build both, the frontend and the API component and serve them on your local machine using port `3000`.
