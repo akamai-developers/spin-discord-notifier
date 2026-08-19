@@ -5,9 +5,12 @@ on:
       - main
     tags:
       - "**"
-
+    paths-ignore: 
+      - "README.md"
+      - "LICENSE"
 jobs:
   publish:
+    name: Build and Publish Spin Artifact
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,29 +30,29 @@ jobs:
             echo "value=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Install Rust with wasm32-wasip2 target
+      - name: Install Rust with wasm32-wasip2
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-wasip2
 
-      - name: Set up Node.js 26
+      - name: Install Node.js 26
         uses: actions/setup-node@v4
         with:
           node-version: "26"
 
-      - name: Install Spin CLI
+      - name: Install Spin
         uses: fermyon/actions/spin/setup@v1
 
-      - name: Build
+      - name: Build Spin App
         run: spin build
 
-      - name: Log in to GHCR
+      - name: Login to GHCR
         run: |
           spin registry login ghcr.io \
             --username "${{ github.actor }}" \
             --password "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Push artifact
+      - name: Push OCI Artifact
         run: |
           spin registry push \
             "ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.value }}"
