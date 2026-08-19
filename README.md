@@ -24,3 +24,13 @@ spin up --build \
 ```
 
 This will build both, the frontend and the API component and serve them on your local machine using port `3000`.
+
+### Running using the OCI reference
+
+The OCI artifact of this application is continuously built and pushed to `ghrc.io`. You can [find all available tags here](https://github.com/akamai-developers/spin-discord-notifier/pkgs/container/spin-discord-notifier). To run the application using an OCI artifact run:
+
+```bash
+spin up \
+ --variable discord_webhook_url="https://discord.com/api/webhooks/your-webhook-id/your-token"
+ --from docker pull ghcr.io/akamai-developers/spin-discord-notifier:4383a39
+```
