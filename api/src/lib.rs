@@ -8,10 +8,12 @@ use tower_service::Service;
 
 use crate::discord::DiscordNotifier;
 
-const MESSAGES: [&str; 3] = [
+const MESSAGES: [&str; 5] = [
     "We'll be live soon and build something amazing with Spin 💫!",
     "On Air soon! Get ready for an exciting journey with Spin 🚀!",
     "Huddle is starting in a few! Join us for some Spin magic ✨!",
+    "Hey Wasm & Spin Friends 👋 We'll go live here on Discord soon 🎉",
+    "Are you busy? Hopefully not, because we'll start streaming in a few 🎥",
 ];
 
 mod discord;

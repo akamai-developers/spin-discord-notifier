@@ -1,5 +1,5 @@
-use serde::{Serialize};
-use spin_sdk::http::{Request, send, StatusCode};
+use serde::Serialize;
+use spin_sdk::http::{Request, send};
 
 pub(crate) struct DiscordNotifier {
     webhook_url: String,
@@ -8,7 +8,10 @@ pub(crate) struct DiscordNotifier {
 
 impl DiscordNotifier {
     pub(crate) fn new(webhook_url: String) -> Self {
-        Self { webhook_url, message: None }
+        Self {
+            webhook_url,
+            message: None,
+        }
     }
 
     pub(crate) fn with_message(&mut self, message: String) -> &mut Self {
@@ -17,37 +20,37 @@ impl DiscordNotifier {
     }
 
     pub(crate) async fn send(&self) -> anyhow::Result<()> {
+        let payload = NotificationPayload {
+            content: self
+                .message
+                .clone()
+                .unwrap_or("Hello from Spin!".to_string()),
+        };
 
-    let payload = NotificationPayload {
-        content: self.message.clone().unwrap_or("Hello from Spin!".to_string()),
-    };
+        let payload = serde_json::to_string(&payload)?;
 
-    let payload = serde_json::to_string(&payload)?;
+        let discord_request = Request::builder()
+            .method("POST")
+            .uri(&self.webhook_url)
+            .header("Content-Type", "application/json")
+            .body(payload)?;
 
-    let discord_request= Request::builder()
-        .method("POST")
-        .uri(&self.webhook_url)
-        .header("Content-Type", "application/json")
-        .body(payload)?;
-
-    match send(discord_request)
-        .await {
+        match send(discord_request).await {
             Ok(discord_response) => {
-                if discord_response.status() == StatusCode::OK {
-                    Ok(())
-                } else {
-                    Err(anyhow::anyhow!("Received {} from Discord", discord_response.status()))
+                let status = discord_response.status().as_u16();
+                match status {
+                    200 | 204 => Ok(()),
+                    _ => Err(anyhow::anyhow!(
+                        "Received {} from Discord",
+                        discord_response.status()
+                    )),
                 }
-            },
-            Err(e) => {
-                Err(anyhow::anyhow!("Error sending notification: {:?}", e))
             }
+            Err(e) => Err(anyhow::anyhow!("Error sending notification: {:?}", e)),
         }
-
-}
+    }
 }
 #[derive(Serialize)]
 pub struct NotificationPayload {
     pub content: String,
 }
-
