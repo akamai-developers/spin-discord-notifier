@@ -5,7 +5,7 @@ on:
       - main
     tags:
       - "**"
-    paths-ignore: 
+    paths-ignore:
       - "README.md"
       - "LICENSE"
 jobs:
@@ -56,3 +56,5 @@ jobs:
         run: |
           spin registry push \
             "ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.value }}"
+          spin registry push \
+            "ghcr.io/${{ github.repository }}:latest"
